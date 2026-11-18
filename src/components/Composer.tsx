@@ -67,7 +67,8 @@ export function Composer({ onSubmit, busy }: { onSubmit: (req: SimulateRequest) 
           value={premise}
           onChange={(e) => setPremise(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) submit(e);
+            // Enter while an IME is composing (Chinese, Japanese, Korean input) confirms the candidate, not the form.
+            if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) submit(e);
           }}
           placeholder="the printing press was invented in ancient China…"
           maxLength={400}
