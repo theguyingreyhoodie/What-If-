@@ -131,6 +131,15 @@ describe("toMarkdown", () => {
     assert.match(md, /\*\*Outcome:\*\* Alt outcome\./);
     assert.match(md, /\| Tech \| Real tech\. \| Alt tech\. \|/);
   });
+
+  test("escapes pipes and line breaks in comparison table cells", () => {
+    const s = createScenario(
+      { premise: "x happened", realism: "wild", horizon: "near" },
+      { ...result, worldToday: [{ aspect: "Trade | Money", real: "Coins\nand notes", alternate: "Shells |  beads" }] },
+    );
+    const row = toMarkdown(s).split("\n").at(-1)!;
+    assert.equal(row, "| Trade \\| Money | Coins and notes | Shells \\|  beads |");
+  });
 });
 
 describe("normalizePremise", () => {
