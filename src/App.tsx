@@ -5,7 +5,7 @@ import { Composer } from "./components/Composer";
 import { ScenarioView } from "./components/ScenarioView";
 import { ThinkingPanel } from "./components/ThinkingPanel";
 import { createScenario, type Scenario } from "./model";
-import { loadScenarios, saveScenarios } from "./storage";
+import { loadScenarios, onScenariosChangedElsewhere, saveScenarios } from "./storage";
 
 const idFromHash = () => location.hash.match(/^#\/s\/(.+)$/)?.[1] ?? null;
 
@@ -16,6 +16,8 @@ export function App() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => saveScenarios(scenarios), [scenarios]);
+  // Re-saving what another tab wrote leaves the stored value unchanged, so this doesn't loop.
+  useEffect(() => onScenariosChangedElsewhere(setScenarios), []);
 
   useEffect(() => {
     const onHash = () => setActiveId(idFromHash());

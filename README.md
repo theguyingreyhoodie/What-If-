@@ -26,6 +26,8 @@ npm run dev               # web on http://localhost:5173, API on :8787
 
 No key yet? `npm run dev:demo` runs with canned timelines and makes no API calls.
 
+`npm test` runs the unit tests (Node's built-in test runner, no API key needed).
+
 ### Production
 
 ```bash
@@ -44,6 +46,7 @@ server/         Express API (keeps the API key server-side)
   demo.ts       canned responses for DEMO=1
 shared/
   schema.ts     zod schemas used for request validation, Claude's output format, and client types
+test/           unit tests for the scenario tree and Markdown export
 ```
 
 `POST /api/simulate` and `POST /api/branch` stream newline-delimited JSON: `thinking` lines while Claude works, then one `result` (or `error`) line. For a branch, the client sends the full path from the divergence to the fork point, plus what originally followed it, so the new branch goes somewhere different.

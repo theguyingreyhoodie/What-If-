@@ -155,7 +155,9 @@ export function toMarkdown(s: Scenario): string {
   }
   if (s.worldToday.length) {
     lines.push("## Our world vs. this one", "", "| Aspect | Our world | This timeline |", "|---|---|---|");
-    for (const w of s.worldToday) lines.push(`| ${w.aspect} | ${w.real} | ${w.alternate} |`);
+    // A "|" or line break inside a cell would otherwise split or end the table row.
+    const cell = (text: string) => text.replace(/\s*\r?\n\s*/g, " ").replace(/\|/g, "\\|");
+    for (const w of s.worldToday) lines.push(`| ${cell(w.aspect)} | ${cell(w.real)} | ${cell(w.alternate)} |`);
   }
   return lines.join("\n");
 }
